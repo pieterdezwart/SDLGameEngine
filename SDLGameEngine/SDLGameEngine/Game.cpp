@@ -60,46 +60,12 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	std::cout << "SDL init success\n";
 	running = true; // enable game loop
 
-	/* 
-	// Loading single image
-	SDL_Surface* tempSurface = SDL_LoadBMP("Assets/duckhunt.bmp");
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-
-	SDL_FreeSurface(tempSurface);
-
-	SDL_QueryTexture(texture, NULL, NULL, &sourceRectangle.w, &sourceRectangle.h);
-
-	sourceRectangle.w = 50;
-	sourceRectangle.h = 50;
-
-	sourceRectangle.x = 50;
-	sourceRectangle.y = 50;
-
-	destinationRectangle.x = 100;
-	destinationRectangle.y = 100;
-
-	//destinationRectangle.x = sourceRectangle.x = 0;
-	//destinationRectangle.y = sourceRectangle.y = 0;
-	destinationRectangle.w = sourceRectangle.w;
-	destinationRectangle.h = sourceRectangle.h;
-	*/
 
 	// loading animated sprite
-	SDL_Surface* tempSurface = IMG_Load("Assets/animate2.png");
-	texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-
-	SDL_FreeSurface(tempSurface);
-
-	SDL_QueryTexture(texture, NULL, NULL, &sourceRectangle.w, &sourceRectangle.h);
-
-	destinationRectangle.x = sourceRectangle.x = 0;
-	destinationRectangle.y = sourceRectangle.y = 0;
-
-	sourceRectangle.w = 128;
-	sourceRectangle.h = 82;
-
-	destinationRectangle.w = sourceRectangle.w;
-	destinationRectangle.h = sourceRectangle.h;
+	if (!TextureManager::getInstance()->load("Assets/animate2.png", "animate", renderer))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -108,14 +74,16 @@ void Game::render()
 {
 	SDL_RenderClear(renderer); // clear the renderer to the draw color
 
-	SDL_RenderCopyEx(renderer, texture, &sourceRectangle, &destinationRectangle, 0, 0, SDL_FLIP_NONE); // single image
+	TextureManager::getInstance()->draw("animate", 0, 0, 128, 82, renderer);
+
+	TextureManager::getInstance()->drawFrame("animate", 100, 100, 128, 82, 1, currentFrame, renderer);
 
 	SDL_RenderPresent(renderer); // draw to the screen
 }
 
 void Game::update()
 {
-	sourceRectangle.x = 128 * int(((SDL_GetTicks() / 100) % 6));
+	currentFrame = int(((SDL_GetTicks() / 100) % 6));
 }
 
 void Game::handleEvents()

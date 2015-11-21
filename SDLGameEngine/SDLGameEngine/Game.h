@@ -2,9 +2,19 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
+#include "TextureManager.h"
 
 class Game
 {
+private:
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+
+	bool running;
+
+	int currentFrame;
+	TextureManager textureManager;
+
 public:
 	Game();
 	~Game();
@@ -19,15 +29,5 @@ public:
 
 	// a function to acces the private running variable
 	bool getRunning() { return running; }
-
-private:
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-
-	SDL_Texture* texture; // the new SDL_Texture variable
-	SDL_Rect sourceRectangle; // the first rectangle
-	SDL_Rect destinationRectangle; // another rectangle
-
-	bool running;
 };
 
