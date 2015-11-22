@@ -2,27 +2,45 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <iostream>
-#include "TextureManager.h"
+#include <vector>
+
+class GameObject;
 
 class Game
 {
 private:
+	Game() {};
+
+	// create the s_pInstance member variable
+	static Game* instance;
+
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
 	bool running;
 
-	int currentFrame;
-	TextureManager textureManager;
+	std::vector<GameObject*> gameObjects;
+
 
 public:
-	Game();
+	static Game* getInstance()
+	{
+		if (instance == 0)
+		{
+			instance = new Game();
+			return instance;
+		}
+		return instance;
+	}
+
 	~Game();
+
+	SDL_Renderer* getRenderer() const { return renderer; }
 
 	// simply set the running variable to true
 	bool init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 
-	void render();
+	void render(float interpolation);
 	void update();
 	void handleEvents();
 	void clean();

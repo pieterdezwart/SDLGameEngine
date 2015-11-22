@@ -1,11 +1,10 @@
 #include "Game.h"
+#include "TextureManager.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "InputHandler.h"
 
-
-
-Game::Game()
-{
-}
-
+Game* Game::instance = 0;
 
 Game::~Game()
 {
@@ -60,52 +59,67 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	std::cout << "SDL init success\n";
 	running = true; // enable game loop
 
+	InputHandler::getInstance()->initialiseControllers();
 
-	// loading animated sprite
+	// loading textures
 	if (!TextureManager::getInstance()->load("Assets/animate2.png", "animate", renderer))
 	{
 		return false;
 	}
 
+
+	// loading objects
+	gameObjects.push_back(new Player(100, 100, 128, 82, "animate"));
+	gameObjects.push_back(new Enemy(300, 300, 128, 82, "animate"));
+
+
 	return true;
 }
 
-void Game::render()
+void Game::render(float interpolation)
 {
 	SDL_RenderClear(renderer); // clear the renderer to the draw color
 
-	TextureManager::getInstance()->draw("animate", 0, 0, 128, 82, renderer);
-
-	TextureManager::getInstance()->drawFrame("animate", 100, 100, 128, 82, 1, currentFrame, renderer);
+	for (GameObject* obj : gameObjects)
+	{
+		obj->draw(interpolation);
+	}
 
 	SDL_RenderPresent(renderer); // draw to the screen
 }
 
 void Game::update()
 {
-	currentFrame = int(((SDL_GetTicks() / 100) % 6));
+	for (GameObject* obj : gameObjects)
+	{
+		obj->update();
+	}
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
+	InputHandler::getInstance()->update();
+
+	//SDL_Event event;
 
 	// event handling switch case
-	if (SDL_PollEvent(&event))
-	{
-		switch (event.type)
-		{
-		case SDL_QUIT:
-			running = false;
-			break;
-		default:
-			break;
-		}
-	}
+	//if (SDL_PollEvent(&event))
+	//{
+	//	switch (event.type)
+	//	{
+	//	case SDL_QUIT:
+	//		running = false;
+	//		break;
+	//	default:
+	//		break;
+	//	}
+	//}
 }
 
 void Game::clean()
 {
+	InputHandler::getInstance()->clean();
+
 	std::cout << "Cleaning game objects\n";
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);

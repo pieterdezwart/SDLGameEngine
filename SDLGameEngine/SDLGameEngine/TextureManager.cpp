@@ -2,16 +2,6 @@
 
 TextureManager* TextureManager::instance = 0;
 
-TextureManager* TextureManager::getInstance()
-{
-	if (instance == 0)
-	{
-		instance = new TextureManager();
-		return instance;
-	}
-	return instance;
-}
-
 TextureManager::~TextureManager()
 {
 }
