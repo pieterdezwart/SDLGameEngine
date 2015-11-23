@@ -5,13 +5,14 @@
 #include <vector>
 
 class GameObject;
+class GameStateMachine;
 
 class Game
 {
 private:
 	Game() {};
 
-	// create the s_pInstance member variable
+	// create the instance member variable
 	static Game* instance;
 
 	SDL_Window* window;
@@ -21,6 +22,7 @@ private:
 
 	std::vector<GameObject*> gameObjects;
 
+	GameStateMachine* gameStateMachine;
 
 public:
 	static Game* getInstance()

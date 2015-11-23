@@ -3,6 +3,9 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "InputHandler.h"
+#include "GameStateMachine.h"
+#include "MenuState.h"
+#include "PlayState.h"
 
 Game* Game::instance = 0;
 
@@ -36,7 +39,7 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 			{
 				std::cout << "Renderer creation success\n";
 
-				SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // r g b alpha
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // r g b alpha
 			}
 			else
 			{
@@ -61,6 +64,10 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	InputHandler::getInstance()->initialiseControllers();
 
+	gameStateMachine = new GameStateMachine();
+
+	gameStateMachine->changeState(new MenuState());
+
 	// loading textures
 	if (!TextureManager::getInstance()->load("Assets/animate2.png", "animate", renderer))
 	{
@@ -80,40 +87,34 @@ void Game::render(float interpolation)
 {
 	SDL_RenderClear(renderer); // clear the renderer to the draw color
 
-	for (GameObject* obj : gameObjects)
-	{
-		obj->draw(interpolation);
-	}
+	//for (GameObject* obj : gameObjects)
+	//{
+	//	obj->draw(interpolation);
+	//}
+
+	gameStateMachine->render(interpolation);
 
 	SDL_RenderPresent(renderer); // draw to the screen
 }
 
 void Game::update()
 {
-	for (GameObject* obj : gameObjects)
-	{
-		obj->update();
-	}
+	//for (GameObject* obj : gameObjects)
+	//{
+	//	obj->update();
+	//}
+
+	gameStateMachine->update();
 }
 
 void Game::handleEvents()
 {
 	InputHandler::getInstance()->update();
 
-	//SDL_Event event;
-
-	// event handling switch case
-	//if (SDL_PollEvent(&event))
-	//{
-	//	switch (event.type)
-	//	{
-	//	case SDL_QUIT:
-	//		running = false;
-	//		break;
-	//	default:
-	//		break;
-	//	}
-	//}
+	if (InputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN))
+	{
+		gameStateMachine->changeState(new PlayState());
+	}
 }
 
 void Game::clean()
