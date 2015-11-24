@@ -4,7 +4,7 @@
 
 class GameObject;
 
-class PlayState : public GameState
+class PauseState : public GameState
 {
 public:
 	virtual void update();
@@ -13,14 +13,11 @@ public:
 	virtual bool onEnter();
 	virtual bool onExit();
 
-	virtual std::string getStateID() const { return playID; }
+	virtual std::string getStateID() const { return pauseID; }
 
 private:
-
-	static const std::string playID;
+	static const std::string pauseID;
 
 	std::vector<GameObject*> gameObjects;
-
-	bool checkCollision(GameObject* obj1, GameObject* obj2);
 };
 

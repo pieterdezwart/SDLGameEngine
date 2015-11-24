@@ -15,6 +15,7 @@ public:
 
 	virtual void clean();
 
+
 private:
 	enum button_state
 	{
@@ -22,5 +23,7 @@ private:
 		MOUSE_OVER = 1,
 		CLICKED = 1
 	};
+
+	bool buttonReleased;
 };
 

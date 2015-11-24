@@ -69,15 +69,15 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	gameStateMachine->changeState(new MenuState());
 
 	// loading textures
-	if (!TextureManager::getInstance()->load("Assets/animate2.png", "animate", renderer))
-	{
-		return false;
-	}
+	//if (!TextureManager::getInstance()->load("Assets/animate2.png", "animate", renderer))
+	//{
+	//	return false;
+	//}
 
 
-	// loading objects
-	gameObjects.push_back(new Player(100, 100, 128, 82, "animate"));
-	gameObjects.push_back(new Enemy(300, 300, 128, 82, "animate"));
+	//// loading objects
+	//gameObjects.push_back(new Player(100, 100, 128, 82, "animate"));
+	//gameObjects.push_back(new Enemy(300, 300, 128, 82, "animate"));
 
 
 	return true;
@@ -87,10 +87,6 @@ void Game::render(float interpolation)
 {
 	SDL_RenderClear(renderer); // clear the renderer to the draw color
 
-	//for (GameObject* obj : gameObjects)
-	//{
-	//	obj->draw(interpolation);
-	//}
 
 	gameStateMachine->render(interpolation);
 
@@ -99,11 +95,6 @@ void Game::render(float interpolation)
 
 void Game::update()
 {
-	//for (GameObject* obj : gameObjects)
-	//{
-	//	obj->update();
-	//}
-
 	gameStateMachine->update();
 }
 
@@ -121,8 +112,11 @@ void Game::clean()
 {
 	InputHandler::getInstance()->clean();
 
+	running = false;
+
 	std::cout << "Cleaning game objects\n";
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
+
 }

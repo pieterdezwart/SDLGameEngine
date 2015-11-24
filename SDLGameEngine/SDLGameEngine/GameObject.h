@@ -15,6 +15,8 @@ public:
 	int getHeight() { return height; }
 	std::string getTextureID() { return textureID; }
 
+	Vector2D& getPosition() { return position; }
+
 protected:
 	GameObject(int x, int y, int width, int height, std::string textureID) : position(x,y), velocity(0, 0)
 	{

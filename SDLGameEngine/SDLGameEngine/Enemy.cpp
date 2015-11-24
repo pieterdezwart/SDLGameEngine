@@ -10,10 +10,16 @@ void Enemy::update()
 {
 	currentFrame = int(((SDL_GetTicks() / 100) % 6));
 
-	int ticks = SDL_GetTicks();
-
-	position.setX(position.getX() + 1);
-	position.setY(position.getY() + 1);
+	if (position.getY() < 0)
+	{
+		velocity.setY(2);
+	}
+	else if (position.getY() > 400)
+	{
+		velocity.setY(-2);
+	}
+	
+	GameObject::update();
 }
 
 void Enemy::clean()

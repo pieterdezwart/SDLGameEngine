@@ -9,18 +9,20 @@ const std::string MenuState::menuID = "MENU";
 
 void MenuState::update()
 {
-	for (GameObject* obj : gameObjects)
+	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		obj->update();
+		gameObjects[i]->update();
 	}
+
 }
 
 void MenuState::render(float interpolation)
 {
-	for (GameObject* obj : gameObjects)
+	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		obj->draw(interpolation);
+		gameObjects[i]->draw(interpolation);
 	}
+
 }
 
 bool MenuState::onEnter()
@@ -34,8 +36,8 @@ bool MenuState::onEnter()
 		return false;
 	}
 
-	GameObject* button1 = new MenuButton(100, 100, 400, 100, "playbutton");
-	GameObject* button2 = new MenuButton(100, 300, 400, 100, "exitbutton");
+	GameObject* button1 = new MenuButton(100, 100, 100, 14, "playbutton");
+	GameObject* button2 = new MenuButton(100, 150, 100, 14, "exitbutton");
 	
 	gameObjects.push_back(button1);
 	gameObjects.push_back(button2);
@@ -46,9 +48,9 @@ bool MenuState::onEnter()
 
 bool MenuState::onExit()
 {
-	for (GameObject* obj : gameObjects)
+	for (int i = 0; i < gameObjects.size(); i++)
 	{
-		obj->clean();
+		gameObjects[i]->clean();
 	}
 
 	gameObjects.clear();

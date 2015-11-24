@@ -49,5 +49,7 @@ public:
 
 	// a function to acces the private running variable
 	bool getRunning() { return running; }
+
+	GameStateMachine* getStateMachine() { return gameStateMachine; }
 };
 

@@ -1,7 +1,9 @@
 #include "Game.h"
 
+
 int main(int argc, char* args[])
 {
+
 	std::cout << "Game init attempt...\n";
 
 	if (Game::getInstance()->init("SDL Window", 100, 100, 640, 480, false))
